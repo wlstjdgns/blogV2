@@ -1,8 +1,19 @@
 # 스프링부트 블로그 V2
 
+## ㄱI획 끝
+
+## 화면설계 끝
+
+## 화면코드 끝
+
+## 테이블설계
+
+## ㄱI능
+
 ## 테이블 쿼리
 
 ```sql
+
 create database blogdb;
 use blogdb;
 
@@ -35,7 +46,5 @@ create table reply_tb (
     constraint fk_reply_board_id foreign key (board_id) references board_tb (id),
     constraint fk_reply_user_id foreign key (user_id) references user_tb (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
 
 ```
