@@ -16,11 +16,11 @@ public class BoardController {
         return "board/saveForm";
     }
 
-    // 1. 데이터 받기 (V)
-    // 2. 인증체크 (:TODO)
-    // 3. 유효성 검사 (:TODO)
-    // 4. 핵심로직 호출 (V)
-    // 5. view or data 응답} (V)
+    // * 1. 데이터 받기 (V)
+    // * 2. 인증체크 (:TODO)
+    // * 3. 유효성 검사 (:TODO)
+    // * 4. 핵심로직 호출 (V)
+    // * 5. view or data 응답} (V)
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO saveDTO) {
         boardService.글쓰기(saveDTO, 1);
