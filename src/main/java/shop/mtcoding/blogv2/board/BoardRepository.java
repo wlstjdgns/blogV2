@@ -1,6 +1,7 @@
 package shop.mtcoding.blogv2.board;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +22,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     @Query("select b from Board b join fetch b.user where b.id = :id")
     Board mFindById(@Param("id") Integer id);
 
-    @Query("select b from Board b left join fetch b.replies r join fetch r.user ru where b.id = :id") 
+    @Query("select b from Board b left join fetch b.replies r left join fetch r.user ru where b.id = :id") 
     //객체지향쿼리 Jpql 알아보기 //화면에 뿌려질 정보들 쿼리 짜는것.
-    Board mFindByIdJoinUserAndReplies(@Param("id") Integer id);
+    Optional<Board> mFindByIdJoinRepliesInUser(@Param("id") Integer id);
 }//left outer join >< right outer join

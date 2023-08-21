@@ -20,7 +20,10 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
-    @PostMapping("/board/update")
+    @Autowired
+    private BoardRepository boardRepository;
+
+    @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id, BoardRequest.UpdateDTO updateDTO) {
         // where 데이터, body, session값
         boardService.게시글수정하기(id, updateDTO);
@@ -47,6 +50,13 @@ public class BoardController {
         return "board/detail";
     }
 
+    @GetMapping("/test/board/{id}")
+    public @ResponseBody Board testDetail(@PathVariable Integer id) {
+        Board board = boardRepository.mFindByIdJoinRepliesInUser(id).get();
+        return board;
+    }
+
+
     // localhost:8080?page=1&keyword=바나나
     @GetMapping("/")
     public String index(@RequestParam(defaultValue = "0") Integer page, HttpServletRequest request) {
@@ -68,6 +78,8 @@ public class BoardController {
     public String saveForm() {
         return "board/saveForm";
     }
+
+
 
     // 1. 데이터 받기 (V)
     // 2. 인증체크 (:TODO)

@@ -94,4 +94,21 @@ public class BoardRepositoryTest {
         // 디비데이터와 동기화됨
         System.out.println(board.getId());
     }
+
+    @Test
+    public void mFindByIdJoinUserAndReplies_test(){
+        Board board = boardRepository.mFindByIdJoinRepliesInUser(1).get();
+        System.out.println("board: id: "+ board.getId());
+        System.out.println("board: title: "+ board.getTitle());
+        System.out.println("board: content: "+ board.getContent());
+        System.out.println("board: creatAt: "+ board.getCreatedAt());
+        System.out.println("=====================================================");
+        board.getReplies().stream().forEach(r ->{
+
+        System.out.println("board in replies : id : "+r.getId());
+        System.out.println("board in replies : comment : "+r.getComment());
+        System.out.println("board in replies : in user : id : "+r.getUser().getId());
+        System.out.println("board in replies : in user : username : "+r.getUser().getUsername());
+        } );
+    }
 }
