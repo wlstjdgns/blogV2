@@ -32,6 +32,27 @@
             </form>
         </div>
 
+        <script>
+            async function saveReply(){
+                let requestBody={
+                    boardId:document.querySelector("#boardId").value,
+                    Comment: document.querySelector("comment").value
+                };
+
+                console.log(requestBody);
+
+                let response = await fetch("/api/reply/save",{
+                    method: "post",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                let responseBody = response.json();
+            }
+        </script>
+
         <!-- 댓글목록 -->
         <div class="card-footer">
             <b>댓글리스트</b>
