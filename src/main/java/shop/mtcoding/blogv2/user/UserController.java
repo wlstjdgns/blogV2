@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import shop.mtcoding.blogv2._core.util.ApiUtil;
 import shop.mtcoding.blogv2._core.util.Script;
 
 @Controller
@@ -17,8 +18,16 @@ public class UserController {
     @Autowired // DI
     private UserService userService;
 
+
     @Autowired
     private HttpSession session;
+
+    @GetMapping("/api/check")
+    public @ResponseBody ApiUtil<String> checkUsername(String username){
+        return userService.checkUsername(username);
+
+    }
+    
 
     // 브라우저 GET /logout 요청을 함 (request 1)
     // 서버는 / 주소를 응답의 헤더에 담음 (Location), 상태코드 302
@@ -51,9 +60,6 @@ public class UserController {
     @PostMapping("/login")
     public @ResponseBody String login(UserRequest.LoginDTO loginDTO) {
         User sessionUser = userService.로그인(loginDTO);
-        if (sessionUser == null) {
-            return Script.back("로그인 실패");
-        }
         session.setAttribute("sessionUser", sessionUser);
         return Script.href("/");
     }
@@ -76,3 +82,6 @@ public class UserController {
         return "redirect:/";
     }
 }
+
+
+

@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import shop.mtcoding.blogv2._core.error.ex.MyApiException;
+import shop.mtcoding.blogv2._core.error.ex.MyException;
+import shop.mtcoding.blogv2._core.util.ApiUtil;
 import shop.mtcoding.blogv2.user.UserRequest.JoinDTO;
 import shop.mtcoding.blogv2.user.UserRequest.LoginDTO;
 import shop.mtcoding.blogv2.user.UserRequest.UpdateDTO;
@@ -14,6 +17,7 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
 
     @Transactional
     public void 회원가입(JoinDTO joinDTO) {
@@ -30,13 +34,13 @@ public class UserService {
 
         // 1. 유저네임 검증
         if (user == null) {
-            return null;
+             throw new MyException("해당 유저 네임이 없습니다."); 
         }
 
         // 2. 패스워드 검증
         if (!user.getPassword().equals(loginDTO.getPassword())) {
-            return null;
-        }
+            throw new MyException("패스워드가 잘못 되었습니다."); 
+        } //여기서 이렇게 스로우로 다 날려버리면 컨트롤러에서 예외처리해줄필요가 없어. 컨트롤러가 간단해지지
 
         // 3. 로그인 성공
         return user;
@@ -55,6 +59,15 @@ public class UserService {
         user.setPassword(updateDTO.getPassword());
 
         return user;
-    } // 3. flush
+    } // 3. flush 더리체킹
+
+    public ApiUtil<String> checkUsername(String username) {
+        User user = userRepository.findByUsername(username);
+        if(user != null){
+            throw new MyApiException("유저네임을 사용할 수 없습니다.");
+        }
+        return new ApiUtil<String>(true, "사용할 수 있습니다.");
+        
+    }
 
 }

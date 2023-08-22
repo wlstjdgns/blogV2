@@ -11,7 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import shop.mtcoding.blogv2._core.error.ex.MyException;
 import shop.mtcoding.blogv2.board.BoardRequest.UpdateDTO;
+import shop.mtcoding.blogv2.reply.Reply;
+import shop.mtcoding.blogv2.reply.ReplyRepository;
 import shop.mtcoding.blogv2.user.User;
 
 /*
@@ -25,6 +28,9 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private ReplyRepository replyRepository;
 
     @Transactional
     public void 글쓰기(BoardRequest.SaveDTO saveDTO, int sessionUserId) {
@@ -48,16 +54,22 @@ public class BoardService {
         if (boardOP.isPresent()) {
             return boardOP.get();
         } else {
-            throw new RuntimeException(id + "는 찾을 수 없습니다");
+            throw new MyException(id + "는 찾을 수 없습니다");
         }
     }
 
     @Transactional
     public void 삭제하기(Integer id) {
+        List<Reply> replies = replyRepository.findByBoardId(id);
+        for (Reply reply : replies) {
+            reply.setBoard(null);
+            replyRepository.save(reply);
+            
+        }
         try {
             boardRepository.deleteById(id);
         } catch (Exception e) {
-            throw new RuntimeException(id+"번은 없어요");
+            throw new MyException(id+"번은 없어요");
         }
     }
 
@@ -69,7 +81,9 @@ public class BoardService {
             board.setTitle(updateDTO.getTitle());
             board.setContent(updateDTO.getContent());
         } else {
-            throw new RuntimeException(id + "는 찾을 수 없습니다");
+            throw new MyException(id + "는 찾을 수 없습니다");
         }
     } // flush (더티체킹)
+    //객체의 변경 사항이 감지되면 Hibernate는 이를 데이터베이스에 반영하기 위해 
+    //필요한 SQL 쿼리를 자동으로 생성하고 실행
 }

@@ -54,18 +54,18 @@ public class UserRepositoryTest {
         }
     }
 
-    @Test
-    public void optional_test() {
-        User user = User.builder().id(1).username("ssar").build();
+    // @Test
+    // public void optional_test() {
+    //     User user = User.builder().id(1).username("ssar").build();
 
-        Optional<User> userOP = Optional.of(user);
+    //     Optional<User> userOP = Optional.of(user);
 
-        if (userOP.isPresent()) {
-            User u = userOP.get();
-            System.out.println("user가 null이 아닙니다");
-        } else {
-            System.out.println("user가 null이에요");
-        }
+    //     if (userOP.isPresent()) {
+    //         User u = userOP.get();
+    //         System.out.println("user가 null이 아닙니다");
+    //     } else {
+    //         System.out.println("user가 null이에요");
+    //     }
     }
 
-}
+
