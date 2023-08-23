@@ -48,6 +48,7 @@ public class UserController {
     // M - V - C
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO joinDTO) {
+        
         userService.회원가입(joinDTO);
         return "user/loginForm"; // persist 초기화
     }
