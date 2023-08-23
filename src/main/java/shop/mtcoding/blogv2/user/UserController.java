@@ -23,7 +23,7 @@ public class UserController {
     private HttpSession session;
 
     @GetMapping("/api/check")
-    public @ResponseBody ApiUtil<String> checkUsername(String username){
+    public ApiUtil<String> checkUsername(String username){
         return userService.checkUsername(username);
 
     }
