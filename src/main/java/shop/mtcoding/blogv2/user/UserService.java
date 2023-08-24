@@ -53,7 +53,12 @@ public class UserService {
     @Transactional
     public void 회원가입(JoinDTO joinDTO) {
         String originalFilename = joinDTO.getPic().getOriginalFilename();
-        String picUrl = FileWrite.save(joinDTO.getPic(), originalFilename);
+        if (originalFilename.isEmpty()) {
+            originalFilename = "basic.jpg";
+            
+        } else {
+            originalFilename = FileWrite.save(joinDTO.getPic(), originalFilename);
+        }
         // 이미지 불러오기 방법
         // : 외부파일에서는 안되고 static 폴더에서 꺼내오는 건 가능
         // 하지만 static은 정적인 파일이기 때문에 넣으면 안됨
@@ -67,10 +72,10 @@ public class UserService {
                 .username(joinDTO.getUsername())
                 .password(joinDTO.getPassword())
                 .email(joinDTO.getEmail())
-                .picUrl(originalFilename.isEmpty() ? "basic.jpg" : picUrl)
+                .picUrl(originalFilename)
                 // .picUrl("./images/" + fileName)
                 // 이렇게 넣으면 위험 - 사진폴더를 변경하고 싶은데 폴더 변경이 안되기 때문에
-                // DB에는 파일에 이름만 저장
+                // DB에는 파일에 이름만 저장f
                 // 하드디스크에 저장하고 저장되어 있는 경로를 넣기
                 .build();
         userRepository.save(user); // em.persist 영속화, 응답될 때 다 날려버림
